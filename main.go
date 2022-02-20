@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 )
 
@@ -14,8 +13,16 @@ var movieName = "After Hours"
 const totalTicketsAvailable int = 50
 var remainingTickets int = 50
 
-// creating list of maps
-var bookings = make([]map[string]string, 0)
+// creating list of structs
+var bookings = make([]UserData, 0)
+
+// defining a struct in go
+type UserData struct {
+	firstName string
+	lastName string
+	email string
+	numberOfTickets int
+}
 
 func main() {
 
@@ -51,15 +58,14 @@ func main() {
 			
 			remainingTickets -= ticketsBooked
 			
-			// creating an empty map
-			var userData = make(map[string]string)
-			userData["firstName"] = firstName
-			userData["lastName"] = lastName
-			userData["email"] = email
-			// all the values in the map should be of same datatype
-			userData["totalTickets"] = strconv.Itoa(ticketsBooked)
+		
 
-			bookings = append(bookings, userData)
+			bookings = append(bookings, UserData{
+				firstName: firstName,
+				lastName: lastName,
+				email: email,
+				numberOfTickets: ticketsBooked,
+			})
 		
 			fmt.Printf("Thank you %v, for booking %v tickets. Your tickets will be sent to %v email\n",firstName, ticketsBooked, email)
 			fmt.Printf("Remaining tickets available for %v are %v\n", movieName, remainingTickets)
@@ -144,7 +150,7 @@ func printBookingNames() {
 	var booking_names []string
 		
 	for _,booking := range bookings {
-		fname := booking["firstName"]
+		fname := booking.firstName
 		booking_names = append(booking_names, fname)
 	}
 
