@@ -7,22 +7,27 @@ import (
 
 func main() {
 
-	// for loop
-	for i:=0; i<10; i++ {
-		fmt.Printf("number is %v\n", i)
-	}
+	// conditionals in go
+	// if else conditions
+	number := 10
 
-	// for each
-	slice := []string{"element1","element2"}
-	// syntax index, element := range list {}
-	for _,element := range slice { 
-		fmt.Printf("element is %v\n", element)
+	if number < 10 {
+		fmt.Println("Number is less than 10")
+	} else if number > 10 {
+		fmt.Println("Number is greater than 10")
+	} else {
+		fmt.Println("Number is equal to 10")
+	}
+	// conditions in loops
+	for number > 0 {
+		fmt.Printf("Number is %v\n",number)
+		number--
 	}
 
 	// variables in go lang
 	var movieName = "After Hours"
-	const totalTicketsAvailable uint = 50
-	var remainingTickets uint = 50
+	const totalTicketsAvailable int = 50
+	var remainingTickets int = 50
 
 	// Display Welcome message for the users
 	// We can send data to standard output using fmt.Print func in go lang
@@ -33,7 +38,7 @@ func main() {
 	var firstName string
 	var lastName string
 	var email string
-	var ticketsBooked uint
+	var ticketsBooked int
 
 	bookings := []string{}
 
@@ -41,27 +46,74 @@ func main() {
 		fmt.Println("Enter your first name")
 		// User input from standard input can be read using fmt.Scan
 		fmt.Scan(&firstName) // '&' indicates reference to the variable firstName
+		fmt.Printf("first name is %v\n", firstName)
 		fmt.Println("Enter your last name")
 		fmt.Scan(&lastName)	
 		fmt.Println("Enter your email")
 		fmt.Scan(&email)
 		fmt.Println("Enter number of tickets required")
 		fmt.Scan(&ticketsBooked)
-	
-		remainingTickets -= ticketsBooked
-		bookings = append(bookings, firstName+" "+lastName)
-	
-		fmt.Printf("Thank you %v, for booking %v tickets. Your tickets will be sent to %v email\n",firstName, ticketsBooked, email)
-		fmt.Printf("Remaining tickets available for %v are %v\n", movieName, remainingTickets)
-	
-		var booking_names []string
-	
-		for _,name := range bookings {
-			full_name := strings.Split(name," ")
-			booking_names = append(booking_names, full_name[0])
+
+		validName := len(firstName) > 1 && len(lastName) > 1
+		validEmail := strings.Contains(email, "@")
+		validTicketNumber := ticketsBooked > 0
+		skip := false
+
+		if validName && validEmail && validTicketNumber {
+
+			ticketsAvailable := remainingTickets >= ticketsBooked
+
+			for !ticketsAvailable{
+				fmt.Printf("We have only %v tickets available\n", remainingTickets)
+				fmt.Println("Enter Number of tickets required")
+				fmt.Scan(&ticketsBooked)
+				validTicketNumber = ticketsBooked > 0
+				if !validTicketNumber {
+					fmt.Println("You have entered invalid ticket number")
+					skip = true
+					break
+				}
+				ticketsAvailable = remainingTickets >= ticketsBooked
+			}
+
+			if skip {
+				continue
+			}
+			
+			remainingTickets -= ticketsBooked
+
+			bookings = append(bookings, firstName+" "+lastName)
+		
+			fmt.Printf("Thank you %v, for booking %v tickets. Your tickets will be sent to %v email\n",firstName, ticketsBooked, email)
+			fmt.Printf("Remaining tickets available for %v are %v\n", movieName, remainingTickets)
+		
+			var booking_names []string
+		
+			for _,name := range bookings {
+				full_name := strings.Split(name," ")
+				booking_names = append(booking_names, full_name[0])
+			}
+		
+			fmt.Printf("Current Bookings are %v\n",booking_names)
+
+			if remainingTickets == 0 {
+				fmt.Println("We are sold out")
+				break
+			}
+
+		} else {
+			if !validName {
+				fmt.Println("You have entered invalid name")
+			}
+			if !validEmail {
+				fmt.Println("You have entered invalid email")
+			}
+			if !validTicketNumber {
+				fmt.Println("You have entered invalid ticket number")
+			}
 		}
 	
-		fmt.Printf("Current Bookings are %v\n",booking_names)
+
 	}
 
 	
