@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"strings"
+	"booking-app/Package"
 )
 
 /*
@@ -15,6 +16,10 @@ var remainingTickets int = 50
 var bookings = []string{}
 
 func main() {
+
+	//we use variables and function from other packages by importing them
+	Package.PackageFunction()
+	Package.Package2Function()
 
 	greetUser()
 
