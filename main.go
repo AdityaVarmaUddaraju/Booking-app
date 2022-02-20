@@ -5,16 +5,18 @@ import (
 	"strings"
 )
 
+/*
+	Package level variables can be accessed by all the functions
+	inside the package
+*/
+var movieName = "After Hours"
+const totalTicketsAvailable int = 50
+var remainingTickets int = 50
+var bookings = []string{}
+
 func main() {
 
-	// variables in go lang
-	var movieName = "After Hours"
-	const totalTicketsAvailable int = 50
-	var remainingTickets int = 50
-
-	greetUser(movieName, totalTicketsAvailable, remainingTickets)
-
-	bookings := []string{}
+	greetUser()
 
 	for {
 		firstName, lastName, email, ticketsBooked := getUserInput()
@@ -51,7 +53,7 @@ func main() {
 			fmt.Printf("Thank you %v, for booking %v tickets. Your tickets will be sent to %v email\n",firstName, ticketsBooked, email)
 			fmt.Printf("Remaining tickets available for %v are %v\n", movieName, remainingTickets)
 		
-			printBookingNames(bookings)
+			printBookingNames()
 
 			if remainingTickets == 0 {
 				fmt.Println("We are sold out")
@@ -75,7 +77,7 @@ func main() {
 }
 
 // func definition in go
-func greetUser(movieName string, totalTicketsAvailable int, remainingTickets int) {
+func greetUser() {
 	// Display Welcome message for the users
 	// We can send data to standard output using fmt.Print func in go lang
 	fmt.Printf("Welcome to %v Movie Ticket Booking App\n",movieName)
@@ -127,7 +129,7 @@ func checkTicketAvailability(remainingTickets int, ticketsBooked int) bool {
 	return remainingTickets >= ticketsBooked
 }
 
-func printBookingNames(bookings []string) {
+func printBookingNames() {
 	var booking_names []string
 		
 	for _,name := range bookings {
