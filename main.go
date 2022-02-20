@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
-	"booking-app/Package"
 )
 
 /*
@@ -13,13 +13,11 @@ import (
 var movieName = "After Hours"
 const totalTicketsAvailable int = 50
 var remainingTickets int = 50
-var bookings = []string{}
+
+// creating list of maps
+var bookings = make([]map[string]string, 0)
 
 func main() {
-
-	//we use variables and function from other packages by importing them
-	Package.PackageFunction()
-	Package.Package2Function()
 
 	greetUser()
 
@@ -52,8 +50,16 @@ func main() {
 			}
 			
 			remainingTickets -= ticketsBooked
+			
+			// creating an empty map
+			var userData = make(map[string]string)
+			userData["firstName"] = firstName
+			userData["lastName"] = lastName
+			userData["email"] = email
+			// all the values in the map should be of same datatype
+			userData["totalTickets"] = strconv.Itoa(ticketsBooked)
 
-			bookings = append(bookings, firstName+" "+lastName)
+			bookings = append(bookings, userData)
 		
 			fmt.Printf("Thank you %v, for booking %v tickets. Your tickets will be sent to %v email\n",firstName, ticketsBooked, email)
 			fmt.Printf("Remaining tickets available for %v are %v\n", movieName, remainingTickets)
@@ -137,9 +143,9 @@ func checkTicketAvailability(remainingTickets int, ticketsBooked int) bool {
 func printBookingNames() {
 	var booking_names []string
 		
-	for _,name := range bookings {
-		full_name := strings.Split(name," ")
-		booking_names = append(booking_names, full_name[0])
+	for _,booking := range bookings {
+		fname := booking["firstName"]
+		booking_names = append(booking_names, fname)
 	}
 
 	fmt.Printf("Current Bookings are %v\n",booking_names)
