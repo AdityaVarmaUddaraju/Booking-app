@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"strings"
+	"sync"
+	"time"
 )
 
 /*
@@ -23,6 +25,9 @@ type UserData struct {
 	email string
 	numberOfTickets int
 }
+
+// we can wait till a go routine is completed using sync
+var wg sync.WaitGroup
 
 func main() {
 
@@ -58,7 +63,12 @@ func main() {
 			
 			remainingTickets -= ticketsBooked
 			
-		
+			user := UserData {
+				firstName: firstName,
+				lastName: lastName,
+				email: email,
+				numberOfTickets: ticketsBooked,
+			}
 
 			bookings = append(bookings, UserData{
 				firstName: firstName,
@@ -68,6 +78,10 @@ func main() {
 			})
 		
 			fmt.Printf("Thank you %v, for booking %v tickets. Your tickets will be sent to %v email\n",firstName, ticketsBooked, email)
+			// we can move the code to run on a different thread using goroutines
+			wg.Add(1) // specify number of threads we need to wait for
+			go sendingTickets(user)
+			
 			fmt.Printf("Remaining tickets available for %v are %v\n", movieName, remainingTickets)
 		
 			printBookingNames()
@@ -90,7 +104,9 @@ func main() {
 		}
 	
 
-	}	
+	}
+	//wait till all the goroutines are executed
+	wg.Wait()	
 }
 
 // func definition in go
@@ -155,4 +171,13 @@ func printBookingNames() {
 	}
 
 	fmt.Printf("Current Bookings are %v\n",booking_names)
+}
+
+func sendingTickets(user UserData) {
+	time.Sleep(10 * time.Second)
+	fmt.Println("###############")
+	fmt.Printf("sending %v tickets to %v\n", user.numberOfTickets, user.email)
+	fmt.Println("###############")
+	// signal to indicate goroutine is completed
+	wg.Done()
 }
