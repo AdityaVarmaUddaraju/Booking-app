@@ -7,21 +7,20 @@ import (
 
 func main() {
 
-	// conditionals in go
-	// if else conditions
-	number := 10
+	// switch statements in go
+	theaterName := "After Hours"
 
-	if number < 10 {
-		fmt.Println("Number is less than 10")
-	} else if number > 10 {
-		fmt.Println("Number is greater than 10")
-	} else {
-		fmt.Println("Number is equal to 10")
-	}
-	// conditions in loops
-	for number > 0 {
-		fmt.Printf("Number is %v\n",number)
-		number--
+	switch theaterName {
+		case "After Hours": {
+			fmt.Println("Movie name is After Hours")
+		}
+		case "Avengers", "Spider-Man": {
+			fmt.Println("Movie name is Avengers or Spider-Man")
+		}
+		default: {
+			fmt.Println("Unknown movie name")
+		}
+
 	}
 
 	// variables in go lang
